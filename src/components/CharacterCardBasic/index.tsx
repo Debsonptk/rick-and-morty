@@ -3,9 +3,9 @@ import { memo } from 'react'
 import { Spinner } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
-import { CharacterType } from 'components/types/CharacterType'
-
 import { strToSlug } from 'helpers'
+
+import { CharacterType } from 'types/CharacterType'
 
 import { Card, ImageContainer } from './styles'
 

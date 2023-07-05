@@ -41,9 +41,7 @@ const Home: React.FC = () => {
   }, [])
 
   const handlePageChange = useCallback(
-    (page: number) => {
-      fetchCharacters(page)
-    },
+    (p: { selected: number }) => fetchCharacters(p.selected + 1),
     [fetchCharacters],
   )
 
@@ -74,9 +72,7 @@ const Home: React.FC = () => {
                   className="pt-3"
                   forcePage={currentPage - 1}
                   nextLabel=">"
-                  onPageChange={(p: { selected: number }) =>
-                    handlePageChange(p.selected + 1)
-                  }
+                  onPageChange={handlePageChange}
                   pageRangeDisplayed={3}
                   pageCount={totalPages}
                   previousLabel="<"

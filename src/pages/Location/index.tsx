@@ -10,8 +10,8 @@ import { LocationType } from 'types/LocationType'
 
 import { Pagination } from 'styles/pagination'
 
-import { BannerLocation, Title } from './styles'
 import Api from 'services/api'
+import { BannerLocation, Title } from './styles'
 
 const Location: React.FC = () => {
   const [locations, setLocations] = useState<LocationType[]>([])

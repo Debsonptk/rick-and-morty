@@ -8,8 +8,8 @@ import Footer from 'components/Footer'
 import Menu from 'components/Menu'
 import { CharacterType } from 'types/CharacterType'
 
-import { BannerHome, BgPage, Title } from './styles'
 import Api from 'services/api'
+import { BannerHome, BgPage, Title } from './styles'
 
 const Character: React.FC = () => {
   const { id } = useParams()

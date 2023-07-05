@@ -5,27 +5,47 @@ import { Col, Container, Row, Spinner } from 'react-bootstrap'
 import CharacterCardBasic from 'components/CharacterCardBasic'
 import Footer from 'components/Footer'
 import Menu from 'components/Menu'
-import { CharacterType } from 'components/types/CharacterType'
+
+import Api from 'services/api'
+
+import { Pagination } from 'styles/pagination'
+
+import { CharacterType } from 'types/CharacterType'
 
 import { BannerHome, BgHome, Title } from './styles'
 
 const Home: React.FC = () => {
   const [characters, setCharacters] = useState<CharacterType[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [totalPages, setTotalPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
 
-  const fetchCharacters = useCallback(async () => {
-    const { results } = await fetch(
-      'https://rickandmortyapi.com/api/character',
-    ).then((response) => response.json())
+  const fetchCharacters = useCallback(async (page: number) => {
+    setIsLoading(true)
+
+    const { data } = await Api.get('/character', {
+      params: {
+        page,
+      },
+    })
 
     setIsLoading(false)
-    setCharacters(results)
+    setCharacters(data.results)
+    setTotalPages(data.info.pages)
+    setCurrentPage(page)
   }, [])
 
   useEffect(() => {
-    fetchCharacters()
+    fetchCharacters(1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const handlePageChange = useCallback(
+    (page: number) => {
+      fetchCharacters(page)
+    },
+    [fetchCharacters],
+  )
 
   return (
     <>
@@ -40,14 +60,31 @@ const Home: React.FC = () => {
               <Spinner animation="border" variant="primary" />
             </div>
           )}
-          <Row className="row-cols-1 row-cols-md-2">
-            {!isLoading &&
-              characters.map((character) => (
-                <Col className="d-flex" key={character.id}>
-                  <CharacterCardBasic character={character} />
-                </Col>
-              ))}
-          </Row>
+          {!isLoading && (
+            <>
+              <Row className="row-cols-1 row-cols-md-2">
+                {characters.map((character) => (
+                  <Col className="d-flex" key={character.id}>
+                    <CharacterCardBasic character={character} />
+                  </Col>
+                ))}
+              </Row>
+              {totalPages > 1 && (
+                <Pagination
+                  className="pt-3"
+                  forcePage={currentPage - 1}
+                  nextLabel=">"
+                  onPageChange={(p: { selected: number }) =>
+                    handlePageChange(p.selected + 1)
+                  }
+                  pageRangeDisplayed={3}
+                  pageCount={totalPages}
+                  previousLabel="<"
+                  marginPagesDisplayed={1}
+                />
+              )}
+            </>
+          )}
         </Container>
       </BgHome>
       <Footer />

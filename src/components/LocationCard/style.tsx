@@ -6,5 +6,5 @@ export const Card = styled.div`
 `
 
 export const BgLocation = styled.div`
-  background-color: #e7e7e7;
+  background-color: #fff;
 `

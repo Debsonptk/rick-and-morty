@@ -6,27 +6,45 @@ import EpisodeCard from 'components/EpisodeCard'
 import { BgEpisodes } from 'components/EpisodeCard/style'
 import Footer from 'components/Footer'
 import Menu from 'components/Menu'
-import { EpisodeType } from 'components/types/EpisodeType'
+import { EpisodeType } from 'types/EpisodeType'
+
+import { Pagination } from 'styles/pagination'
 
 import { BannerEpisodes, Title } from './styles'
+
+import Api from 'services/api'
 
 const Episodes: React.FC = () => {
   const [episodes, setEpisodes] = useState<EpisodeType[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [totalPages, setTotalPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
 
-  const fetchEpisodes = useCallback(async () => {
-    const { results } = await fetch(
-      'https://rickandmortyapi.com/api/episode',
-    ).then((response) => response.json())
+  const fetchEpisodes = useCallback(async (page: number) => {
+    const { data } = await Api.get('/episode', {
+      params: {
+        page,
+      },
+    })
+    console.log(data)
 
     setIsLoading(false)
-    setEpisodes(results)
+    setEpisodes(data.results)
+    setTotalPages(data.info.pages)
+    setCurrentPage(page)
   }, [])
 
   useEffect(() => {
-    fetchEpisodes()
+    fetchEpisodes(1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const handlePageChange = useCallback(
+    (page: number) => {
+      fetchEpisodes(page)
+    },
+    [fetchEpisodes],
+  )
 
   return (
     <>
@@ -41,7 +59,7 @@ const Episodes: React.FC = () => {
               <Spinner animation="border" variant="primary" />
             </div>
           )}
-          <Row className="row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 pt-5 pb-5">
+          <Row className="row-cols-1 row-cols-md-2 row-cols-lg-4 pt-5 pb-5 g-4">
             {!isLoading &&
               episodes.map((episode) => (
                 <Col key={episode.id} className="d-flex">
@@ -49,6 +67,20 @@ const Episodes: React.FC = () => {
                 </Col>
               ))}
           </Row>
+          {totalPages > 1 && (
+            <Pagination
+              className="pt-3 pb-4"
+              forcePage={currentPage - 1}
+              nextLabel=">"
+              onPageChange={(p: { selected: number }) =>
+                handlePageChange(p.selected + 1)
+              }
+              pageRangeDisplayed={3}
+              pageCount={totalPages}
+              previousLabel="<"
+              marginPagesDisplayed={1}
+            />
+          )}
         </Container>
       </BgEpisodes>
       <Footer />

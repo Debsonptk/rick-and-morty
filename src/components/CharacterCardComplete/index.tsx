@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 
 import { CharacterType } from 'components/types/CharacterType'
 
+import { strToSlug } from 'helpers'
+
 import { Card, ImageContainer } from './styles'
 
 interface ICharacterProps {
@@ -16,7 +18,7 @@ const CharacterCard: React.FC<ICharacterProps> = ({ character }) => {
     <Card className="card mb-3">
       <div className="row">
         <Link
-          to={`/character/${character.id}/${character.name}`}
+          to={`/character/${character.id}/${strToSlug(character.name)}`}
           className="col-md-4"
         >
           <ImageContainer

@@ -6,9 +6,10 @@ import { useParams } from 'react-router-dom'
 import CharacterCardComplete from 'components/CharacterCardComplete'
 import Footer from 'components/Footer'
 import Menu from 'components/Menu'
-import { CharacterType } from 'components/types/CharacterType'
+import { CharacterType } from 'types/CharacterType'
 
 import { BannerHome, BgPage, Title } from './styles'
+import Api from 'services/api'
 
 const Character: React.FC = () => {
   const { id } = useParams()
@@ -16,9 +17,7 @@ const Character: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   const fetchCharacter = useCallback(async () => {
-    const response = await fetch(
-      `https://rickandmortyapi.com/api/character/${id}`,
-    ).then((r) => r.json())
+    const { data: response } = await Api.get(`/character/${id}`)
 
     setIsLoading(false)
     setCharacter(response)

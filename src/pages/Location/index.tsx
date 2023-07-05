@@ -6,27 +6,43 @@ import Footer from 'components/Footer'
 import LocationCard from 'components/LocationCard'
 import { BgLocation } from 'components/LocationCard/style'
 import Menu from 'components/Menu'
-import { LocationType } from 'components/types/LocationType'
+import { LocationType } from 'types/LocationType'
+
+import { Pagination } from 'styles/pagination'
 
 import { BannerLocation, Title } from './styles'
+import Api from 'services/api'
 
 const Location: React.FC = () => {
   const [locations, setLocations] = useState<LocationType[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [totalPages, setTotalPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
 
-  const fetchLocations = useCallback(async () => {
-    const { results } = await fetch(
-      'https://rickandmortyapi.com/api/location',
-    ).then((response) => response.json())
+  const fetchLocations = useCallback(async (page: number) => {
+    const { data } = await Api.get('/location', {
+      params: {
+        page,
+      },
+    })
 
     setIsLoading(false)
-    setLocations(results)
+    setLocations(data.results)
+    setTotalPages(data.info.pages)
+    setCurrentPage(page)
   }, [])
 
   useEffect(() => {
-    fetchLocations()
+    fetchLocations(1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const handlePageChange = useCallback(
+    (page: number) => {
+      fetchLocations(page)
+    },
+    [fetchLocations],
+  )
 
   return (
     <>
@@ -49,6 +65,20 @@ const Location: React.FC = () => {
                 </Col>
               ))}
           </Row>
+          {totalPages > 1 && (
+            <Pagination
+              className="pb-3"
+              forcePage={currentPage - 1}
+              nextLabel=">"
+              onPageChange={(p: { selected: number }) =>
+                handlePageChange(p.selected + 1)
+              }
+              pageRangeDisplayed={3}
+              pageCount={totalPages}
+              previousLabel="<"
+              marginPagesDisplayed={1}
+            />
+          )}
         </Container>
       </BgLocation>
       <Footer />

@@ -10,9 +10,8 @@ import { EpisodeType } from 'types/EpisodeType'
 
 import { Pagination } from 'styles/pagination'
 
-import { BannerEpisodes, Title } from './styles'
-
 import Api from 'services/api'
+import { BannerEpisodes, Title } from './styles'
 
 const Episodes: React.FC = () => {
   const [episodes, setEpisodes] = useState<EpisodeType[]>([])

@@ -1,6 +1,6 @@
 import { memo } from 'react'
 
-import { EpisodeType } from 'components/types/EpisodeType'
+import { EpisodeType } from 'types/EpisodeType'
 
 import { Card } from './style'
 

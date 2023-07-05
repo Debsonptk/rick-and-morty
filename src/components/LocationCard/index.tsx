@@ -1,6 +1,6 @@
 import { memo } from 'react'
 
-import { LocationType } from 'components/types/LocationType'
+import { LocationType } from 'types/LocationType'
 
 import { Card } from './style'
 

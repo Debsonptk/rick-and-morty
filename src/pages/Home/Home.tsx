@@ -41,8 +41,7 @@ const Home: React.FC = () => {
   }, [])
 
   const handlePageChange = useCallback(
-    (p: { selected: number }) =>
-    fetchCharacters(p.selected + 1),
+    (p: { selected: number }) => fetchCharacters(p.selected + 1),
     [fetchCharacters],
   )
 

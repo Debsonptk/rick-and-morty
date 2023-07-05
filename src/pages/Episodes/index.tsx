@@ -22,20 +22,20 @@ const Episodes: React.FC = () => {
 
   const fetchEpisodes = useCallback(async (page: number) => {
     setIsLoading(true)
-    try {const { data } = await Api.get('/episode', {
-      params: {
-        page,
-      },
-    })
-    setEpisodes(data.results)
-    setTotalPages(data.info.pages)
-    setCurrentPage(page)
-    } catch(e) {
+    try {
+      const { data } = await Api.get('/episode', {
+        params: {
+          page,
+        },
+      })
+      setEpisodes(data.results)
+      setTotalPages(data.info.pages)
+      setCurrentPage(page)
+    } catch (e) {
       console.error(e)
     } finally {
       setIsLoading(false)
     }
-
   }, [])
 
   useEffect(() => {

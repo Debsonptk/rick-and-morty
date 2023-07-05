@@ -16,22 +16,26 @@ import Api from 'services/api'
 
 const Episodes: React.FC = () => {
   const [episodes, setEpisodes] = useState<EpisodeType[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [totalPages, setTotalPages] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
 
   const fetchEpisodes = useCallback(async (page: number) => {
-    const { data } = await Api.get('/episode', {
+    setIsLoading(true)
+    try {const { data } = await Api.get('/episode', {
       params: {
         page,
       },
     })
-    console.log(data)
-
-    setIsLoading(false)
     setEpisodes(data.results)
     setTotalPages(data.info.pages)
     setCurrentPage(page)
+    } catch(e) {
+      console.error(e)
+    } finally {
+      setIsLoading(false)
+    }
+
   }, [])
 
   useEffect(() => {

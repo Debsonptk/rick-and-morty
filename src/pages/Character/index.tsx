@@ -6,21 +6,29 @@ import { useParams } from 'react-router-dom'
 import CharacterCardComplete from 'components/CharacterCardComplete'
 import Footer from 'components/Footer'
 import Menu from 'components/Menu'
-import { CharacterType } from 'types/CharacterType'
 
 import Api from 'services/api'
+
+import { CharacterType } from 'types/CharacterType'
+
 import { BannerHome, BgPage, Title } from './styles'
 
 const Character: React.FC = () => {
   const { id } = useParams()
   const [character, setCharacter] = useState<CharacterType | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   const fetchCharacter = useCallback(async () => {
+    setIsLoading(true)
     const { data: response } = await Api.get(`/character/${id}`)
-
-    setIsLoading(false)
-    setCharacter(response)
+    try {
+      setCharacter(response)
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e)
+    } finally {
+      setIsLoading(false)
+    }
   }, [id])
 
   useEffect(() => {

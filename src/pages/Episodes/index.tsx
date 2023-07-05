@@ -6,11 +6,13 @@ import EpisodeCard from 'components/EpisodeCard'
 import { BgEpisodes } from 'components/EpisodeCard/style'
 import Footer from 'components/Footer'
 import Menu from 'components/Menu'
-import { EpisodeType } from 'types/EpisodeType'
+
+import Api from 'services/api'
 
 import { Pagination } from 'styles/pagination'
 
-import Api from 'services/api'
+import { EpisodeType } from 'types/EpisodeType'
+
 import { BannerEpisodes, Title } from './styles'
 
 const Episodes: React.FC = () => {
@@ -31,6 +33,7 @@ const Episodes: React.FC = () => {
       setTotalPages(data.info.pages)
       setCurrentPage(page)
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e)
     } finally {
       setIsLoading(false)

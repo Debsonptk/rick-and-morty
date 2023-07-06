@@ -16,23 +16,29 @@ import { BannerHome, BgHome, Title } from './styles'
 
 const Home: React.FC = () => {
   const [characters, setCharacters] = useState<CharacterType[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [totalPages, setTotalPages] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
 
   const fetchCharacters = useCallback(async (page: number) => {
     setIsLoading(true)
 
-    const { data } = await Api.get('/character', {
-      params: {
-        page,
-      },
-    })
+    try {
+      const { data } = await Api.get('/character', {
+        params: {
+          page,
+        },
+      })
 
-    setIsLoading(false)
-    setCharacters(data.results)
-    setTotalPages(data.info.pages)
-    setCurrentPage(page)
+      setCharacters(data.results)
+      setTotalPages(data.info.pages)
+      setCurrentPage(page)
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e)
+    } finally {
+      setIsLoading(false)
+    }
   }, [])
 
   useEffect(() => {

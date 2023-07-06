@@ -6,30 +6,40 @@ import Footer from 'components/Footer'
 import LocationCard from 'components/LocationCard'
 import { BgLocation } from 'components/LocationCard/style'
 import Menu from 'components/Menu'
-import { LocationType } from 'types/LocationType'
+
+import Api from 'services/api'
 
 import { Pagination } from 'styles/pagination'
 
-import Api from 'services/api'
+import { LocationType } from 'types/LocationType'
+
 import { BannerLocation, Title } from './styles'
 
 const Location: React.FC = () => {
   const [locations, setLocations] = useState<LocationType[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [totalPages, setTotalPages] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
 
   const fetchLocations = useCallback(async (page: number) => {
-    const { data } = await Api.get('/location', {
-      params: {
-        page,
-      },
-    })
+    setIsLoading(true)
 
-    setIsLoading(false)
-    setLocations(data.results)
-    setTotalPages(data.info.pages)
-    setCurrentPage(page)
+    try {
+      const { data } = await Api.get('/location', {
+        params: {
+          page,
+        },
+      })
+
+      setLocations(data.results)
+      setTotalPages(data.info.pages)
+      setCurrentPage(page)
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e)
+    } finally {
+      setIsLoading(false)
+    }
   }, [])
 
   useEffect(() => {

@@ -1,6 +1,9 @@
 import { memo, useCallback, useEffect, useState } from 'react'
 
-import { Col, Container, Row, Spinner } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
+import Lottie from 'react-lottie'
+
+import animationData from 'assets/animation/loading-morty.json'
 
 import CharacterCardBasic from 'components/CharacterCardBasic'
 import Footer from 'components/Footer'
@@ -61,7 +64,15 @@ const Home: React.FC = () => {
         <Container>
           {isLoading && (
             <div className="text-center pt-5">
-              <Spinner animation="border" variant="primary" />
+              <Lottie
+                options={{
+                  animationData,
+                  autoplay: true,
+                  loop: true,
+                }}
+                height={250}
+                width={250}
+              />
             </div>
           )}
           {!isLoading && (

@@ -11,6 +11,10 @@ export const BannerLocation = styled.div`
 `
 
 export const Title = styled.h1`
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 5px;
+  width: fit-content;
+  margin: 0 auto;
   position: relative;
   &::after {
     content: '';

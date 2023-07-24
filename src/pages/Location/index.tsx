@@ -1,6 +1,9 @@
 import { memo, useCallback, useEffect, useState } from 'react'
 
-import { Col, Container, Row, Spinner } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
+import Lottie from 'react-lottie'
+
+import animationData from 'assets/animation/loading-morty.json'
 
 import Footer from 'components/Footer'
 import LocationCard from 'components/LocationCard'
@@ -64,7 +67,15 @@ const Location: React.FC = () => {
         <Container>
           {isLoading && (
             <div className="text-center pt-5">
-              <Spinner animation="border" variant="primary" />
+              <Lottie
+                options={{
+                  animationData,
+                  autoplay: true,
+                  loop: true,
+                }}
+                height={250}
+                width={250}
+              />
             </div>
           )}
           <Row className="pt-5 pb-4 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">

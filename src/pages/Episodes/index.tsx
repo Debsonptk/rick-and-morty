@@ -1,6 +1,9 @@
 import { memo, useCallback, useEffect, useState } from 'react'
 
-import { Col, Container, Row, Spinner } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
+import Lottie from 'react-lottie'
+
+import animationData from 'assets/animation/loading-morty.json'
 
 import EpisodeCard from 'components/EpisodeCard'
 import { BgEpisodes } from 'components/EpisodeCard/style'
@@ -62,7 +65,15 @@ const Episodes: React.FC = () => {
         <Container>
           {isLoading && (
             <div className="mt-5 text-center">
-              <Spinner animation="border" variant="primary" />
+              <Lottie
+                options={{
+                  animationData,
+                  autoplay: true,
+                  loop: true,
+                }}
+                height={250}
+                width={250}
+              />
             </div>
           )}
           <Row className="row-cols-1 row-cols-md-2 row-cols-lg-4 pt-5 pb-5 g-4">

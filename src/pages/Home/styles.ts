@@ -16,6 +16,10 @@ export const BannerHome = styled.div`
 `
 
 export const Title = styled.h1`
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 5px;
+  width: fit-content;
+  margin: 0 auto;
   position: relative;
   &::after {
     content: '';
@@ -28,5 +32,8 @@ export const Title = styled.h1`
     display: inline-block;
     border-top: 1px solid #fff;
     border-bottom: 1px solid #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: fit-content;
+    margin: 0 auto;
   }
 `
